@@ -4,8 +4,3 @@ for i,j in a.items():
     x=j.split('\u0000')
     a[i]=''.join(x)
 print(a)
-        
-        
-    
-    
-
