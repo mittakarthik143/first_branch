@@ -1,0 +1,43 @@
+*** Settings ***
+Documentation    Test Setup & Teardown/ Suite Setup & Teardown
+    ...    Test Setup - when test case execution will start before starting it will make setups for that test case
+    ...    Test Teardown - when test case execution end after it will close all sessions/cookies.
+    ...    Suite Setup - when all test cases execution will start before it will make setups
+    ...    Suite Teardown - when all test cases execution end after it will close all session/cookies
+    ...    Command1 :- robot -v IP:1.1.1.1 -d "C:\Users\7336696\Videos\Robot Framework PR\OutputFiles" -l ...    ip_ping.html -V variables.py --report ip_ping.log ip_ping.txt
+    ...    Command2 :- robot -v IP:1.1.1.1 -d "C:\Users\7336696\Videos\Robot Framework PR\OutputFiles" -l ...    ip_ping.html -V variables.py --report ip_ping.log -t "Print Hi" ip_ping.txt
+    ...    Command3 :- robot -v IP:1.1.1.1 -d "C:\Users\7336696\Videos\Robot Framework PR\OutputFiles" -l ...    ip_ping.html -V variables.py --report ip_ping.log -e "Print Hi" ip_ping.txt
+    ...    Command4 :- 
+Library    Process
+Library    BuiltIn
+Library    Collections
+Suite Teardown    Terminate All Processes    kill=True
+
+
+*** Variables ***
+${ip}=    ${IP}
+${val}=    ${value}
+
+*** Test Cases ***
+Ping Test
+    [Documentation]    Pinging the ip
+    ...                ping ${ip}
+    [Tags]     Normal
+    ${result}=    Run Process    ping 1.1.1.1    shell=True    stdout=C:\stdout.txt
+    Log To Console    all output: ${result.stdout}
+    Should Contain    ${result.stdout}    Ping statistics for 1.1.1.1
+
+Print Variables Values
+    [Documentation]    Prints give file value
+    [Tags]    Print State
+    Log To Console    ${val}
+    
+Print Hi
+    [Documentation]    print hi
+    [Tags]    Print State
+    Log To Console    Hi! Robot Framework...
+
+Print Greetings
+    [Documentation]    print greetings
+    [Tags]    Normal
+    Log To Console     Hi! Good AfterNoon...
